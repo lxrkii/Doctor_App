@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пациент {{ user.name or user.id }} — ЭлайнерКонтроль</title>
+</head>
+<body>
+    <h2>Пациент: {{ user.name or '—' }} (ID: {{ user.id }})</h2>
+    <ul>
+        <li>Номер элайнера: {{ user.current_aligner_number }}</li>
+        <li>Дата последней смены: {{ user.last_aligner_change_date }}</li>
+        <li>График смены: {{ user.aligner_change_interval_days }} дней</li>
+        <li>Цель по ношению: {{ user.daily_goal_hours }} ч/сутки</li>
+    </ul>
+    <h3>Редактировать профиль</h3>
+    <form method="post" action="/patient/{{ user.id }}/edit">
+        <label>Имя: <input type="text" name="name" value="{{ user.name or '' }}" required></label><br>
+        <label>
+            <input type="checkbox" name="name_locked" {% if user.name_locked %}checked{% endif %}>
+            Заблокировать изменение имени пользователем
+        </label><br>
+        <label>Цель по ношению (ч/сутки): <input type="number" step="0.1" name="daily_goal_hours" value="{{ user.daily_goal_hours }}" required></label><br>
+        <label>График смены (дней): <input type="number" name="aligner_change_interval_days" value="{{ user.aligner_change_interval_days }}" required></label><br>
+        <button type="submit">Сохранить</button>
+    </form>
+    <h3>История сессий (последние 30)</h3>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Дата</th>
+            <th>Начало</th>
+            <th>Конец</th>
+            <th>Длительность (мин)</th>
+        </tr>
+        {% for s in sessions %}
+        <tr>
+            <td>{{ s.date }}</td>
+            <td>{{ s.start_time.strftime('%H:%M') }}</td>
+            <td>{% if s.end_time %}{{ s.end_time.strftime('%H:%M') }}{% else %}—{% endif %}</td>
+            <td>{% if s.duration_seconds %}{{ (s.duration_seconds // 60) }}{% else %}—{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p><a href="/patients">← Назад к списку</a></p>
+</body>
+</html> 

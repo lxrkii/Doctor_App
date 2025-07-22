@@ -1,0 +1,7 @@
+aiogram
+tortoise-orm
+aiosqlite
+fastapi
+uvicorn
+jinja2
+python-multipart

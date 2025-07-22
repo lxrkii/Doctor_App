@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пациенты — ЭлайнерКонтроль</title>
+</head>
+<body>
+    <h2>Список пациентов</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Номер элайнера</th>
+            <th>Цель (ч/сутки)</th>
+            <th>Подробнее</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name or '—' }}</td>
+            <td>{{ user.current_aligner_number }}</td>
+            <td>{{ user.daily_goal_hours }}</td>
+            <td><a href="/patient/{{ user.id }}">Открыть</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html> 
